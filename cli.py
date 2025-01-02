@@ -102,3 +102,67 @@ while True:
             print("You have entered the some anonymous parameter....")
 
 print("Take care.. see ya!!!")
+
+
+'''
+while True:
+    user_action = input("Type add or show or edit or complete or  exit ")
+    user_action = user_action.strip()
+
+    if user_action.startswith('add'):
+
+                  todo = user_action[4:]
+
+                  todos = functions.get_todos()
+
+                  todos.append(todo + '\n')
+                  functions.write_todos(todos)
+
+    elif user_action.startswith('show'):
+
+                todos = functions.get_todos()
+                for index, item in enumerate(todos):
+
+                    row = f"{index + 1},:- {item.strip()}"
+                    print(row)
+
+    elif user_action.startswith('edit'):
+
+            try:
+                number = int(user_action[5:])
+                number = number - 1
+
+                todos = functions.get_todos()
+                print(todos[number])
+
+                new_todo = input("Enter new to-do : ")
+                todos[number] = new_todo + '\n'
+                functions.write_todos (todos)
+
+            except ValueError:
+                print("Your command is not valid!!!")
+
+    elif user_action.startswith('complete'):
+
+            try:
+                number = int(user_action[9:])
+                number = number - 1
+
+                todos = functions.get_todos()
+                todo_to_remove = todos[number].strip('\n')
+                print(todos.pop(number))
+
+                functions.write_todos(todos)
+
+                message = f"This todo {todo_to_remove} was removed from the list "
+                print(message)
+            except IndexError:
+                print("The value provided is not in the list")
+
+    elif user_action.startswith('exit'):
+
+            break
+    else:
+            print("You have entered the some anonymous parameter....")
+
+print("Take care.. see ya!!!")'''
