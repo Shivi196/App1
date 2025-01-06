@@ -1,10 +1,11 @@
 from PySimpleGUI import Window
 
 import functions
-
+import time
 import PySimpleGUI as sg
 
-
+sg.theme("NeonBlue")
+clock = sg.Text('',key = 'clock')
 label = sg.Text('Type in a To-Do ')
 input_box = sg.InputText(tooltip="Enter a to-do item ",key= "add_data")
 add_button = sg.Button("Add")
@@ -17,15 +18,18 @@ exit_button = sg.Button("EXIT")
 complete_button = sg.Button("Complete")
 
 window = sg.Window('My To-do app',
-                   layout=[[label,input_box,add_button],
+                   layout=[[clock],
+                       [label],
+                       [input_box,add_button],
                            [list_box,edit_button,complete_button],
                            [exit_button]],
                    font= ('Helvetica',14)
                    )
 while True:
-    event,values = window.read()
-    print(event)
-    print(values)
+    event,values = window.read(timeout = 200)
+    window['clock'].update(value= time.strftime("%b %d %Y %H:%M: %S"))
+    # print(event)
+    # print(values)
     match event:
         case 'Add':
             todos = functions.get_todos()
@@ -36,22 +40,29 @@ while True:
             window['edit_data'].update(values=todos)
 
         case 'Edit':
-            todo_to_edit = values['edit_data'][0]
-            new_todo = values['add_data'] + '\n'
+            try:
 
-            todos = functions.get_todos()
-            index = todos.index(todo_to_edit)
-            todos[index] = new_todo
-            functions.write_todos(todos)
-            window['edit_data'].update(values=todos)
+                todo_to_edit = values['edit_data'][0]
+                new_todo = values['add_data'] + '\n'
+
+                todos = functions.get_todos()
+                index = todos.index(todo_to_edit)
+                todos[index] = new_todo
+                functions.write_todos(todos)
+                window['edit_data'].update(values=todos)
+            except IndexError:
+                sg.popup("Please select the item first!!! ",font= ('Helvetica',14))
 
         case 'Complete':
-            todo_to_complete = values['edit_data'][0]
-            todos = functions.get_todos()
-            todos.remove(todo_to_complete)
-            functions.write_todos(todos)
-            window['edit_data'].update(values=todos)
-            window['add_data'].update(value='')
+            try:
+                todo_to_complete = values['edit_data'][0]
+                todos = functions.get_todos()
+                todos.remove(todo_to_complete)
+                functions.write_todos(todos)
+                window['edit_data'].update(values=todos)
+                window['add_data'].update(value='')
+            except IndexError:
+                sg.popup("Please select the item first!!! ",font= ('Helvetica',14))
 
         case 'EXIT':
             break
@@ -66,7 +77,7 @@ while True:
 #break statement just stops the execution of the loop and continue the other next lines of code to execute
 #exit function completely stops the program and no further written code will be executed
 
-print("hello")
+print("Bye!!")
 window.close()
 
 
