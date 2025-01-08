@@ -3,19 +3,24 @@ from PySimpleGUI import Window
 import functions
 import time
 import PySimpleGUI as sg
+import os
 
-sg.theme("NeonBlue")
+if not os.path.exists("todos.txt"):
+    with open("todos.txt","w") as file:
+        pass
+
+sg.theme("Black")
 clock = sg.Text('',key = 'clock')
 label = sg.Text('Type in a To-Do ')
 input_box = sg.InputText(tooltip="Enter a to-do item ",key= "add_data")
-add_button = sg.Button("Add")
+add_button = sg.Button(tooltip="Kindly click to add" ,key = "Add",image_source="add.png",mouseover_colors="LightBlue",size=2)
 list_box = sg.Listbox(values=functions.get_todos(),enable_events=True,key= 'edit_data',size=[45,10])
 # key helps in recognising the events data that whether its edit event data or add event
 # enable_events helps in getting the run time selected data at the backend program and see what event is getting selected and when
 edit_button = sg.Button("Edit")
 exit_button = sg.Button("EXIT")
 
-complete_button = sg.Button("Complete")
+complete_button = sg.Button(tooltip="Kindly click to remove the item",image_source="complete.png",mouseover_colors="LightBlue",key="Complete")
 
 window = sg.Window('My To-do app',
                    layout=[[clock],
